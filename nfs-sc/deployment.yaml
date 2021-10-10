@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-client-provisioner-0
+  labels:
+    app: nfs-client-provisioner-0
+  # replace with namespace where provisioner is deployed
+  namespace: app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner-0
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner-0
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner-0
+          image: registry.cn-shenzhen.aliyuncs.com/k8s_cd/nfs-subdir-external-provisioner:v4.0.2
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: k8s-sigs.io/nfs-subdir-external-provisioner-0
+            - name: NFS_SERVER
+              value: 192.168.65.50
+            - name: NFS_PATH
+              value: /nfs
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: 192.168.65.50
+            path: /nfs
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-client-provisioner-1
+  labels:
+    app: nfs-client-provisioner-1
+  # replace with namespace where provisioner is deployed
+  namespace: app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner-1
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner-1
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner-1
+          image: registry.cn-shenzhen.aliyuncs.com/k8s_cd/nfs-subdir-external-provisioner:v4.0.2
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: k8s-sigs.io/nfs-subdir-external-provisioner-1
+            - name: NFS_SERVER
+              value: 192.168.65.51
+            - name: NFS_PATH
+              value: /nfs
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: 192.168.65.51
+            path: /nfs
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-client-provisioner-2
+  labels:
+    app: nfs-client-provisioner-2
+  # replace with namespace where provisioner is deployed
+  namespace: app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner-2
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner-2
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner-2
+          image: registry.cn-shenzhen.aliyuncs.com/k8s_cd/nfs-subdir-external-provisioner:v4.0.2
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: k8s-sigs.io/nfs-subdir-external-provisioner-2
+            - name: NFS_SERVER
+              value: 192.168.65.52
+            - name: NFS_PATH
+              value: /nfs
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: 192.168.65.52
+            path: /nfs

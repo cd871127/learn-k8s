@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-configmap
+  namespace: app
+  labels:
+    app: mysql
+data:
+  master.cnf: |
+    # Apply this config only on the master.
+    [mysqld]
+    log-bin
+  slave.cnf: |
+    # Apply this config only on slaves.
+    [mysqld]
+    super-read-only
+  mysql.cnf: |
+    log_bin_trust_function_creators=1
+    character-set-server = utf8mb4
+    collation-server = utf8mb4_general_ci
+    init_connect='SET NAMES utf8mb4'
+    lower_case_table_names = 1
+    max_connections = 100
+    max_connect_errors = 200
+    explicit_defaults_for_timestamp = true
+    max_allowed_packet = 1G
+    interactive_timeout = 30
+    wait_timeout = 30
+    tmp_table_size = 134217728
+    max_heap_table_size = 134217728
+    slow_query_log = on
+    slow_query_log_file = slow.log
+    long_query_time = 1
+    log_queries_not_using_indexes = 1
+    log_throttle_queries_not_using_indexes = 5
+    long_query_time = 2
+    min_examined_row_limit = 100
+    default_authentication_plugin=mysql_native_password
+    default-storage-engine=INNODB
