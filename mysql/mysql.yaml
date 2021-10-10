@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: app
+  labels:
+    app: mysql 
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
+  selector:
+    app: mysql  
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: app
+  labels:
+    app: mysql 
+spec:
+  serviceName: "mysql"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mysql 
+  template:
+    metadata:
+      labels: 
+        app: mysql 
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0.26
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql
+          mountPath: /var/lib/mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "mysql"
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: mysql-nfs-storage
+      resources:
+        requests:
+          storage: 500Mi

@@ -1,3 +1,33 @@
+教程
+
+https://blog.csdn.net/weixin_41947378/category_10426192.html
+
+
+
+k8s 镜像
+
+私有仓库
+
+https://artifacthub.io/packages/helm/nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
+
+外网镜像弄到阿里云
+
+https://mp.weixin.qq.com/s/kf0SrktAze3bT7LcIveDYw
+
+
+
+阿里云镜像
+
+https://cr.console.aliyun.com/cn-hangzhou/instances/repositories
+
+
+
+
+
+https://blog.csdn.net/networken/article/details/84571373
+
+
+
 # keepalived
 
 安装keepalived
@@ -171,3 +201,26 @@ cd /etc/kubernetes/pki for crt in $(find /etc/kubernetes/pki/ -name "*.crt"); do
 
 
 
+# nfs服务
+
+
+
+
+
+k8s nfs插件
+
+https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner
+
+deploy文件夹
+
+please make sure that `nfs-utils` is installed on all nodes and the command `mount.nfs` is accessible
+
+
+
+mysql 
+
+https://www.cnblogs.com/haixiaozh/p/13437966.html
+
+https://blog.csdn.net/weixin_41947378/article/details/111509849
+
+https://blog.csdn.net/weixin_38320674/article/details/106089098
