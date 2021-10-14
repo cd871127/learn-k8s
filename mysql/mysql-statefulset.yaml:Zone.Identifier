@@ -1,3 +1,0 @@
-[ZoneTransfer]
-ZoneId=3
-HostUrl=https://kubernetes.io/examples/application/mysql/mysql-statefulset.yaml
