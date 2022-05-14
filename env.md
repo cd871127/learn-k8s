@@ -4,6 +4,12 @@ https://blog.csdn.net/weixin_41947378/category_10426192.html
 
 
 
+dashboard 账号密码登录
+
+https://blog.csdn.net/Datura_qing/article/details/122986681
+
+
+
 k8s 镜像
 
 私有仓库
