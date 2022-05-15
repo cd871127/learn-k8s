@@ -333,9 +333,13 @@ sudo kubeadm init --config init.yaml
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+echo 'export KUBECONFIG=$HOME/.kube/config' >>~/.bashrc
 ```
 
 
+
+全局的
 
 修改admin文件权限 `/etc/kubernetes/admin.conf`
 
@@ -356,7 +360,7 @@ echo 'export KUBECONFIG=/etc/kubernetes/admin.conf' >>~/.bashrc
 ```
 sudo apt-get install bash-completion
 source /usr/share/bash-completion/bash_completion
-echo 'alias k=kubectl' >>~/.bashrc
+echo 'source <(kubectl completion bash)' >>~/.bashrc
 source .bashrc
 ```
 
