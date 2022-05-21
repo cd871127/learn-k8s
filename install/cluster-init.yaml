@@ -1,0 +1,58 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+bootstrapTokens:
+  - groups:
+      - system:bootstrappers:kubeadm:default-node-token
+    token: abcdef.0123456789abcdef
+    ttl: 24h0m0s
+    usages:
+      - signing
+      - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  #修改IP为本机IP
+  advertiseAddress: 192.168.65.201
+  bindPort: 6443
+nodeRegistration:
+  criSocket: unix:///var/run/containerd/containerd.sock
+  imagePullPolicy: IfNotPresent
+  #修改name为hostname
+  name: k8smaster01
+  taints: null
+---
+#添加集群IP
+controlPlaneEndpoint: "192.168.65.200:6443"
+apiServer:
+  timeoutForControlPlane: 4m0s
+  ## 添加证书域名
+  certSANs:
+    - "k8smaster01"
+    - "k8smaster02"
+    - "k8smaster03"
+    - "k8scluster"
+    - "192.168.65.200"
+    - "192.168.65.201"
+    - "192.168.65.202"
+    - "192.168.65.203"
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+# 添加集群的controlpanel
+controllerManager: {}
+dns: {}
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+#镜像从 k8s.gcr.io改为registry.aliyuncs.com/google_containers
+imageRepository: registry.aliyuncs.com/google_containers
+kind: ClusterConfiguration
+kubernetesVersion: 1.24.0
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: 10.96.0.0/12
+  #添加pod网络，这里和flannel的默认配置一样
+  podSubnet: 10.244.0.0/16
+scheduler: {}
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+#指定用systemd
+cgroupDriver: systemd
