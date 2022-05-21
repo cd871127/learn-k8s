@@ -230,6 +230,24 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 
 
+配置crictl,修改`/etc/crictl.yaml`
+
+```yaml
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+timeout: 10
+debug: false
+```
+
+安装kubectl命令行补全插件https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+
+```
+sudo apt-get install bash-completion
+source /usr/share/bash-completion/bash_completion
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+source .bashrc
+```
+
 ### 4、初始化master
 
 生成配置
@@ -294,17 +312,6 @@ cgroupDriver: systemd
 
 
 
-配置crictl,修改`/etc/crictl.yaml`
-
-```yaml
-runtime-endpoint: unix:///var/run/containerd/containerd.sock
-image-endpoint: unix:///var/run/containerd/containerd.sock
-timeout: 10
-debug: false
-```
-
-
-
 拉去pause3.6，这个在kubelet初始化的时候会用，而且用的是k8s.gcr.io/pause， 但是init用的3.7，如果不拉3.6会因为网络问题导致初始化异常
 
 ```bash
@@ -355,14 +362,7 @@ echo 'export KUBECONFIG=/etc/kubernetes/admin.conf' >>~/.bashrc
 
 
 
-安装kubectl命令行补全插件https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 
-```
-sudo apt-get install bash-completion
-source /usr/share/bash-completion/bash_completion
-echo 'source <(kubectl completion bash)' >>~/.bashrc
-source .bashrc
-```
 
 
 
