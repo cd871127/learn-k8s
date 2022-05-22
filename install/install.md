@@ -346,7 +346,7 @@ subjects:
 
 创建token
 ```
-kubectl create token kubernetes-dashboard
+kubectl create token dashboard-admin -n kubernetes-dashboard
 ```
 
 https://192.168.65.200:32001 登录，用token

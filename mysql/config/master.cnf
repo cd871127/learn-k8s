@@ -1,0 +1,22 @@
+[mysqld]
+#Mysql服务的唯一编号 每个mysql服务Id需唯一
+server-id = 1
+
+binlog-ignore-db=information_schema
+binlog-ignore-db=mysql
+binlog-ignore-db=sys
+binlog-ignore-db=performance_schema
+
+log-bin=master_binlog
+
+#sync_binlog=1  #开启binlog日志同步功能
+#log-bin=mysql-bin-121 #binlog日志文件名（可以任意命名）
+#binlog-do-db=xxxx  # 这个表示只同步某个库 （如果没有此项，表示同步所有的库）
+
+#binlog-ignore-db=
+#log-bin=/var/lib/mysql/binlog
+#https://www.jb51.net/article/158227.htm
+
+
+#CREATE USER 'slave'@'172.28.0.12' IDENTIFIED WITH mysql_native_password BY 'xxxx';
+#GRANT REPLICATION SLAVE ON *.* TO 'slave'@'172.28.0.12';
