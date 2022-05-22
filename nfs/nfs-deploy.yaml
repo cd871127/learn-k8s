@@ -1,18 +1,22 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: nfs-client-provisioner
+  name: nfs-client-provisioner-01
+  labels:
+    app: nfs-client-provisioner-01
+  # replace with namespace where provisioner is deployed
+  namespace: default
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: nfs-client-provisioner
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner-01
   template:
     metadata:
       labels:
-        app: nfs-client-provisioner
+        app: nfs-client-provisioner-01
     spec:
       serviceAccountName: nfs-client-provisioner
       containers:
@@ -23,13 +27,13 @@ spec:
               mountPath: /persistentvolumes
           env:
             - name: PROVISIONER_NAME
-              value: k8s-sigs.io/nfs-subdir-external-provisioner
+              value: k8s-nfs-provisioner-01
             - name: NFS_SERVER
-              value: <YOUR NFS SERVER HOSTNAME>
+              value: k8snfs01
             - name: NFS_PATH
               value: /nfs
       volumes:
         - name: nfs-client-root
           nfs:
-            server: <YOUR NFS SERVER HOSTNAME>
-            path: /var/nfs
+            server: k8snfs01
+            path: /nfs
