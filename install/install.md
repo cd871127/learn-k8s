@@ -351,3 +351,7 @@ kubectl create token dashboard-admin -n kubernetes-dashboard
 
 https://192.168.65.200:32001 登录，用token
 
+
+测试容器域名
+kubectl run -i --tty --image busybox:1.28 dns-test --restart=Never --rm /bin/sh
+nslookup nginx-0.nginx-service.default.svc.cluster.local

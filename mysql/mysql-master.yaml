@@ -31,6 +31,21 @@ spec:
       labels: 
         app: mysql-master
     spec:
+      initContainers:
+      - name: init-mysql-master
+        image: mysql:8.0.29
+        command:
+          - bash
+          - "-c"
+          - |
+            set -ex
+            cp /mnt/config-map/master.cnf /mnt/conf.d/
+            cp /mnt/config-map/mysql.cnf /mnt/conf.d/
+        volumeMounts:
+          - name: conf
+            mountPath: /mnt/conf.d
+          - name: config-map
+            mountPath: /mnt/config-map
       containers:
       - name: mysql
         image: mysql:8.0.29
@@ -38,17 +53,19 @@ spec:
         ports:
         - containerPort: 3306
         volumeMounts:
-        - name: mysql
+        - name: mysql-nfs-master
           mountPath: /var/lib/mysql
+        - name: conf
+          mountPath: /etc/mysql/conf.d
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "mysql"
-  volumeClaimTemplates:
-  - metadata:
-      name: mysql-master
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      storageClassName: mysql-nfs-storage
-      resources:
-        requests:
-          storage: 500Mi
+      volumes:
+        - name: config-map
+          configMap:
+            name: mysql-configmap
+        - name: mysql-nfs-master
+          persistentVolumeClaim:
+            claimName: mysql-master-pvc
+        - name: conf
+          emptyDir: {}
