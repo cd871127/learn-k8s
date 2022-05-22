@@ -49,6 +49,12 @@ spec:
       containers:
       - name: mysql-master
         image: mysql:8.0.29
+#        command:
+#          - bash
+#          - "-c"
+#          - |
+#            set -ex
+#            mysql -h 127.0.0.1 -uroot -pmysql -e "CREATE USER 'slave'@'%' IDENTIFIED WITH mysql_native_password BY 'slave';GRANT REPLICATION SLAVE,REPLICATION CLIENT ON *.* TO 'slave'@'%';FLUSH PRIVILEGES;"
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306

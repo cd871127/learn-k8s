@@ -49,6 +49,14 @@ spec:
       containers:
       - name: mysql
         image: mysql:8.0.29
+#        command:
+#          - bash
+#          - "-c"
+#          - |
+#            set -ex
+#            BINLOG_FILE=`mysql -h mysql-master-0.mysql-master.default.svc.cluster.local -uslave -pslave -e "show master status" |awk '{if(NR==2)print $1}'`
+#            BINLOG_POS=`mysql -h mysql-master-0.mysql-master.default.svc.cluster.local -uslave -pslave -e "show master status" |awk '{if(NR==2)print $2}'`
+#            mysql -uroot -pmysql -e "CHANGE MASTER TO MASTER_HOST='mysql-master-0.mysql-master.default.svc.cluster.local',MASTER_USER='slave',MASTER_PASSWORD='slave',MASTER_LOG_FILE='$BINLOG_FILE',MASTER_LOG_POS=$BINLOG_POS;start slave;"
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306
