@@ -56,7 +56,7 @@ log_queries_not_using_indexes = 1
 log_throttle_queries_not_using_indexes = 5
 
 #慢查询执行的秒数，必须达到此值可被记录
-long_query_time = 2
+long_query_time = 1
 
 #检索的行数必须达到此值才可被记为慢查询
 min_examined_row_limit = 100
