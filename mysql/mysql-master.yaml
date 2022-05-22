@@ -1,39 +1,39 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
-  namespace: app
+  name: mysql-master
+  namespace: default
   labels:
-    app: mysql 
+    app: mysql-master
 spec:
   ports:
   - port: 3306
-    name: mysql
+    name: mysql-master
   clusterIP: None
   selector:
-    app: mysql  
+    app: mysql-master
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql
-  namespace: app
+  name: mysql-master
+  namespace: default
   labels:
-    app: mysql 
+    app: mysql-master
 spec:
-  serviceName: "mysql"
-  replicas: 2
+  serviceName: "mysql-master"
+  replicas: 1
   selector:
     matchLabels:
-      app: mysql 
+      app: mysql-master
   template:
     metadata:
       labels: 
-        app: mysql 
+        app: mysql-master
     spec:
       containers:
       - name: mysql
-        image: mysql:8.0.26
+        image: mysql:8.0.29
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306
@@ -45,7 +45,7 @@ spec:
           value: "mysql"
   volumeClaimTemplates:
   - metadata:
-      name: mysql
+      name: mysql-master
     spec:
       accessModes: ["ReadWriteOnce"]
       storageClassName: mysql-nfs-storage
