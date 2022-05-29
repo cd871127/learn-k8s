@@ -34,25 +34,7 @@ https://blog.csdn.net/networken/article/details/84571373
 
 
 
-Win10 安装kubectl
 
-先choco
-
-```
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-```
-
-
-
-然后
-
-choco install kubernetes-cli
-
-
-
-然后
-
-复制linux的~/.kube/config到win10的user下面
 
 
 

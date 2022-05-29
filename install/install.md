@@ -282,6 +282,18 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 echo 'export KUBECONFIG=$HOME/.kube/config' >>~/.bashrc
 ```
 
+Win10 安装kubectl
+
+先choco
+```
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+```
+
+然后
+choco install kubernetes-cli
+然后
+复制linux的~/.kube/config到win10的user下面
+
 ### 3.4、flannel插件
 ```
 tsocks wget https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml 
