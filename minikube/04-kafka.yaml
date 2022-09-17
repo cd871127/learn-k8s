@@ -1,0 +1,86 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: kafka-nfs-storage-class
+provisioner: k8s-nfs-provisioner # or choose another name, must match deployment's env PROVISIONER_NAME'
+parameters:
+  archiveOnDelete: "false"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: kafka-nfs-persistent-volume-claim
+spec:
+  storageClassName: kafka-nfs-storage-class
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+  namespace: default
+  labels:
+    app: kafka
+spec:
+  ports:
+    - port: 9092
+      name: kafka
+  clusterIP: None
+  selector:
+    app: kafka
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kafka
+  namespace: default
+  labels:
+    app: kafka
+spec:
+  serviceName: kafka
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+        - name: kafka
+          image: bitnami/kafka:3.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9092
+          volumeMounts:
+            - name: kafka-data
+              mountPath: /bitnami
+          env:
+            - name: KAFKA_ENABLE_KRAFT
+              value: yes
+            - name: KAFKA_CFG_PROCESS_ROLES
+              value: broker,controller
+            - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+              value: CONTROLLER
+            - name: KAFKA_CFG_LISTENERS
+              value: PLAINTEXT://:9092,CONTROLLER://:9093
+            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+              value: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+            - name: KAFKA_CFG_ADVERTISED_LISTENERS
+              value: PLAINTEXT://127.0.0.1:9092
+            - name: KAFKA_BROKER_ID
+              value: 1
+            - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+              value: 1@127.0.0.1:9093
+            - name: ALLOW_PLAINTEXT_LISTENER
+              value: yes
+      volumes:
+        - name: kafka-data
+          configMap:
+            name: kafka-configmap
+
