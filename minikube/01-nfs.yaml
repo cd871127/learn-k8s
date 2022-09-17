@@ -69,7 +69,7 @@ metadata:
   # replace with namespace where provisioner is deployed
   namespace: default
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: Recreate
   selector:
