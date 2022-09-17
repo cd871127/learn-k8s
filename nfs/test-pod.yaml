@@ -18,4 +18,4 @@ spec:
   volumes:
     - name: nfs-pvc
       persistentVolumeClaim:
-        claimName: nfs-pvc-01
+        claimName: mysql-master-pvc

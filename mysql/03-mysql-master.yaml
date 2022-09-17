@@ -33,7 +33,7 @@ spec:
     spec:
       initContainers:
       - name: init-mysql-master
-        image: mysql:8.0.29
+        image: mysql:8.0.30
         command:
           - bash
           - "-c"
@@ -48,7 +48,7 @@ spec:
             mountPath: /mnt/config-map
       containers:
       - name: mysql-master
-        image: mysql:8.0.29
+        image: mysql:8.0.30
 #        command:
 #          - bash
 #          - "-c"
@@ -66,6 +66,19 @@ spec:
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "mysql"
+        livenessProbe:
+          exec:
+            command: [ "mysqladmin", "ping" ]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            # Check we can execute queries over TCP (skip-networking is off).
+            command: [ "mysql", "-h", "127.0.0.1", "-e", "SELECT 1" ]
+          initialDelaySeconds: 5
+          periodSeconds: 2
+          timeoutSeconds: 1
       volumes:
         - name: config-map
           configMap:
@@ -75,16 +88,3 @@ spec:
             claimName: mysql-master-pvc
         - name: conf
           emptyDir: {}
-      livenessProbe:
-        exec:
-          command: [ "mysqladmin", "ping" ]
-        initialDelaySeconds: 30
-        periodSeconds: 10
-        timeoutSeconds: 5
-      readinessProbe:
-        exec:
-          # Check we can execute queries over TCP (skip-networking is off).
-          command: [ "mysql", "-h", "127.0.0.1", "-e", "SELECT 1" ]
-        initialDelaySeconds: 5
-        periodSeconds: 2
-        timeoutSeconds: 1

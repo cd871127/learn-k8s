@@ -33,7 +33,7 @@ spec:
     spec:
       initContainers:
       - name: init-mysql-slave
-        image: mysql:8.0.29
+        image: mysql:8.0.30
         command:
           - bash
           - "-c"
@@ -48,7 +48,7 @@ spec:
             mountPath: /mnt/config-map
       containers:
       - name: mysql
-        image: mysql:8.0.29
+        image: mysql:8.0.30
 #        command:
 #          - bash
 #          - "-c"

@@ -29,13 +29,13 @@ spec:
             - name: PROVISIONER_NAME
               value: k8s-nfs-provisioner-01
             - name: NFS_SERVER
-              value: k8snfs01
+              value: 192.168.65.130
             - name: NFS_PATH
               value: /nfs
       volumes:
         - name: nfs-client-root
           nfs:
-            server: k8snfs01
+            server: 192.168.65.130
             path: /nfs
 ---
 apiVersion: storage.k8s.io/v1
